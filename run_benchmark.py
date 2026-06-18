@@ -13,8 +13,18 @@ def main(dataset: str = "data/hotpot_mini.json", out_dir: str = "outputs/sample_
     examples = load_dataset(dataset)
     react = ReActAgent()
     reflexion = ReflexionAgent(max_attempts=reflexion_attempts)
-    react_records = [react.run(example) for example in examples]
-    reflexion_records = [reflexion.run(example) for example in examples]
+
+    print(f"[1/2] ReAct — {len(examples)} ví dụ...")
+    react_records = []
+    for i, ex in enumerate(examples, 1):
+        react_records.append(react.run(ex))
+        print(f"  ReAct {i}/{len(examples)} ({ex.qid})", flush=True)
+
+    print(f"[2/2] Reflexion — {len(examples)} ví dụ...")
+    reflexion_records = []
+    for i, ex in enumerate(examples, 1):
+        reflexion_records.append(reflexion.run(ex))
+        print(f"  Reflexion {i}/{len(examples)} ({ex.qid})", flush=True)
     all_records = react_records + reflexion_records
     out_path = Path(out_dir)
     save_jsonl(out_path / "react_runs.jsonl", react_records)

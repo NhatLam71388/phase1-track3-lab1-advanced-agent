@@ -9,3 +9,4 @@ env/
 .pytest_cache/
 outputs/
 .DS_Store
+data/hotpot_dev_distractor_v1.json
